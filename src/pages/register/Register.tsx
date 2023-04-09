@@ -1,6 +1,6 @@
 import { Form, Input } from "antd";
 import { AuthForm } from "../../components";
-import { LockOutlined } from "@ant-design/icons";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 export const Register: React.FC = () => {
   const onSubmit = (): void => {};
@@ -33,6 +33,14 @@ export const Register: React.FC = () => {
             prefix={<LockOutlined />}
             placeholder="Confirm password"
           />
+        </Form.Item>
+      }
+      username={
+        <Form.Item
+          name="username"
+          rules={[{ required: true, message: "Please input your Username!" }]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Username" />
         </Form.Item>
       }
     />

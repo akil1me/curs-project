@@ -1,5 +1,5 @@
 import React from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import { Link } from "react-router-dom";
 
@@ -9,6 +9,7 @@ type AuthFormProps = {
   onSubmit: () => void;
   confirm?: React.ReactElement;
   socialNetwork?: React.ReactElement;
+  username?: React.ReactElement;
 };
 
 export const AuthForm: React.FC<AuthFormProps> = ({
@@ -17,6 +18,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   link,
   confirm,
   socialNetwork,
+  username,
 }) => {
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
@@ -31,14 +33,12 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
+          {username}
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: "Please input your Username!" }]}
+            name="email"
+            rules={[{ required: true, message: "Please input your Email!" }]}
           >
-            <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
-            />
+            <Input prefix={<MailOutlined />} placeholder="Email" />
           </Form.Item>
           <Form.Item
             name="password"
