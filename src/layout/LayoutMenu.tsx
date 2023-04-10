@@ -1,12 +1,12 @@
-import React, { useState } from "react";
 import {
+  HomeOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, theme, Avatar, Select, Button } from "antd";
+import { Avatar, Button, Layout, Menu, Select, theme } from "antd";
+import React, { useEffect, useState } from "react";
 
 import { Link, Outlet } from "react-router-dom";
 
@@ -14,11 +14,21 @@ import "./latout-menu.scss";
 
 const { Header, Sider, Content } = Layout;
 
+const getKeys: string = localStorage.getItem("keys") || "1";
+const getLanguage: string = localStorage.getItem("language") || "ru";
+
 export const LayoutMenu: React.FC = () => {
+  const [keys, setKeys] = useState<string>(getKeys);
+  const [language, setLanguage] = useState<string>(getLanguage);
   const [collapsed, setCollapsed] = useState(window.screen.width < 600);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  useEffect(() => {
+    localStorage.setItem("keys", keys);
+    localStorage.setItem("language", language);
+  }, [keys, language]);
 
   return (
     <Layout className="h-screen">
@@ -35,29 +45,26 @@ export const LayoutMenu: React.FC = () => {
             <Menu
               theme="dark"
               mode="inline"
-              defaultSelectedKeys={["1"]}
+              defaultSelectedKeys={[keys]}
+              onSelect={(e) => setKeys(e.key)}
               items={[
                 {
                   key: "1",
-                  icon: <UserOutlined />,
+                  icon: <HomeOutlined />,
                   label: <Link to="">home</Link>,
                 },
                 {
                   key: "2",
                   icon: <VideoCameraOutlined />,
-                  label: <Link to="reviews">reviews</Link>,
-                },
-                {
-                  key: "3",
-                  icon: <UploadOutlined />,
-                  label: "nav 3",
+                  label: <Link to="reviews">my reviews</Link>,
                 },
               ]}
             />
           </div>
 
           <Select
-            defaultValue="lucy"
+            value={language}
+            onChange={(e) => setLanguage(e)}
             options={[
               { value: "ru", label: "Russian" },
               { value: "en", label: "English" },
@@ -81,7 +88,7 @@ export const LayoutMenu: React.FC = () => {
           <Button>Log out</Button>
         </Header>
         <Content
-          className="my-6 mx-4 p-6"
+          className="content"
           style={{
             background: colorBgContainer,
           }}

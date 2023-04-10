@@ -1,3 +1,5 @@
-export const Home:React.FC = () => {
-  return <div>Home</div>
-}
+import { Reviews } from "../../components";
+
+export const Home: React.FC = () => {
+  return <Reviews />;
+};

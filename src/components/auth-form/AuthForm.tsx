@@ -1,7 +1,11 @@
 import React from "react";
-import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
 import { Link } from "react-router-dom";
+import {
+  ArrowLeftOutlined,
+  LockOutlined,
+  MailOutlined,
+} from "@ant-design/icons";
+import { Button, Form, Input } from "antd";
 
 type AuthFormProps = {
   title: string;
@@ -25,11 +29,18 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   };
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="relative h-screen flex justify-center px-4 items-center">
+      <Link
+        className="absolute top-1 md:top-7 left-4 md:left-7 text-blue-400 border-blue-400 hover:border-b-2 transition-all"
+        to="/"
+      >
+        <ArrowLeftOutlined className="align-middle mr-3" />{" "}
+        <span className="hidden md:inline-block">Go to home</span>
+      </Link>
       <div className="flex-auto max-w-md">
         <h1 className="text-2xl text-center mb-6">{title}</h1>
         <Form
-          name="normal_login"
+          name="auth"
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
@@ -57,7 +68,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({
               {title}
             </Button>
             <span className="float-right">
-              Or <Link to={"/" + link}>{link} now!</Link>
+              Or{" "}
+              <Link className="text-blue-500" to={"/" + link}>
+                {link} now!
+              </Link>
             </span>
           </Form.Item>
           {socialNetwork}

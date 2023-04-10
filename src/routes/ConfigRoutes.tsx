@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { LayoutMenu } from "../layout";
-import { Home, Login, Register, Reviews } from "../pages";
+import { Home, Login, Register, UserReviews } from "../pages";
 
 type Children = {
   path: string;
@@ -25,7 +25,7 @@ const routes: RoutesType[] = [
       },
       {
         path: "reviews",
-        element: <Reviews />,
+        element: <UserReviews />,
       },
       {
         path: "*",
@@ -44,12 +44,8 @@ const authRoutes: RoutesType[] = [
     path: "register",
     element: <Register />,
   },
-  {
-    path: "*",
-    element: <Navigate to="login" />,
-  },
 ];
 
 export const ConfigRoutes: React.FC = () => {
-  return useRoutes(authRoutes);
+  return useRoutes([...routes, ...authRoutes]);
 };
