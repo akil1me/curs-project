@@ -1,9 +1,10 @@
+import { LikeFilled, MessageOutlined } from "@ant-design/icons";
+import { Avatar, List, Rate, Space } from "antd";
 import React from "react";
-import { LikeOutlined, MessageOutlined, StarOutlined } from "@ant-design/icons";
-import { Avatar, List, Space } from "antd";
+import { Link } from "react-router-dom";
 
 const data = Array.from({ length: 23 }).map((_, i) => ({
-  href: "https://ant.design",
+  href: "/",
   title: `ant design part ${i}`,
   avatar: `https://joesch.moe/api/v1/random?key=${i}`,
   description:
@@ -12,10 +13,12 @@ const data = Array.from({ length: 23 }).map((_, i) => ({
     "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
 }));
 
-const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
+const IconText = ({ icon, text }: { icon: React.ReactNode; text: string }) => (
+  <Space className="mb-4 md:mb-0 hover:opacity-70 transition-opacity cursor-pointer ">
+    <div className="">
+      {icon}
+      <span className="ml-3">{text}</span>
+    </div>
   </Space>
 );
 
@@ -32,22 +35,28 @@ export const Reviews: React.FC = () => (
     dataSource={data}
     renderItem={(item) => (
       <List.Item
-        className="flex-col-reverse  md:flex-row mb-6"
+        className="flex-col-reverse  md:flex-row mb-6 "
         style={{ padding: 0, paddingBottom: 20 }}
         key={item.title}
         actions={[
           <IconText
-            icon={StarOutlined}
-            text="156"
+            icon={
+              <Rate
+                allowHalf
+                onChange={(e) => console.log(e)}
+                defaultValue={0}
+              />
+            }
+            text="5"
             key="list-vertical-star-o"
           />,
           <IconText
-            icon={LikeOutlined}
+            icon={<LikeFilled className="text-red-600 align-middle" />}
             text="156"
             key="list-vertical-like-o"
           />,
           <IconText
-            icon={MessageOutlined}
+            icon={<MessageOutlined className="align-middle" />}
             text="2"
             key="list-vertical-message"
           />,
@@ -64,7 +73,7 @@ export const Reviews: React.FC = () => (
       >
         <List.Item.Meta
           avatar={<Avatar src={item.avatar} />}
-          title={<a href={item.href}>{item.title}</a>}
+          title={<Link to={item.href}>{item.title}</Link>}
           description={item.description}
         />
         {item.content}

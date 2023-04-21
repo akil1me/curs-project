@@ -10,7 +10,7 @@
 }
 
 .content {
-  @apply md:my-6 md:mx-4 p-3 md:p-6 overflow-auto;
+  @apply md:my-3 md:mx-2 p-3 overflow-auto;
 
   &::-webkit-scrollbar {
     width: 10px;
