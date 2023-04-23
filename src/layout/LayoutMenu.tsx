@@ -5,11 +5,11 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Drawer, Layout, Menu, Select } from "antd";
+import { Avatar, Button, Drawer, Layout, Menu, Select, Switch } from "antd";
 import React, { useEffect, useState } from "react";
 
 import { Link, Outlet } from "react-router-dom";
-
+import { Dark, Light } from "../components";
 import "./latout-menu.scss";
 
 const { Header, Sider, Content } = Layout;
@@ -33,7 +33,7 @@ const items = [
 export const LayoutMenu: React.FC = () => {
   const [keys, setKeys] = useState<string>(getKeys);
   const [language, setLanguage] = useState<string>(getLanguage);
-  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [collapsed, setCollapsed] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -86,7 +86,14 @@ export const LayoutMenu: React.FC = () => {
           )}
 
           <div>
+            <Switch
+              className="relative overflow-hidden bg-slate-400"
+              checkedChildren={<Dark />}
+              unCheckedChildren={<Light />}
+              onChange={(e) => console.log(e)}
+            />
             <Select
+              className="mx-3"
               value={language}
               onChange={(e) => setLanguage(e)}
               options={[
@@ -106,9 +113,10 @@ export const LayoutMenu: React.FC = () => {
       <div>
         <Drawer
           style={{ backgroundColor: "#001529FF" }}
+          width={"85%"}
           title={
             <div className="flex items-center justify-between ">
-              <p className="text-gray-200">Basic Drawer</p>
+              <p className="text-gray-200">User</p>
 
               <Button
                 onClick={() => setOpen(false)}

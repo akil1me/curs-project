@@ -1,7 +1,9 @@
 import { LikeFilled, MessageOutlined } from "@ant-design/icons";
-import { Avatar, List, Rate, Space } from "antd";
+import { Avatar, Button, Image, List, Rate, Space } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
+
+import "./reviews.scss";
 
 const data = Array.from({ length: 23 }).map((_, i) => ({
   href: "/",
@@ -14,11 +16,11 @@ const data = Array.from({ length: 23 }).map((_, i) => ({
 }));
 
 const IconText = ({ icon, text }: { icon: React.ReactNode; text: string }) => (
-  <Space className="mb-4 md:mb-0 hover:opacity-70 transition-opacity cursor-pointer ">
-    <div className="">
+  <Space className="mb-4 ">
+    <Button className="h-auto outline-none border-none">
       {icon}
       <span className="ml-3">{text}</span>
-    </div>
+    </Button>
   </Space>
 );
 
@@ -57,14 +59,14 @@ export const Reviews: React.FC = () => (
           />,
           <IconText
             icon={<MessageOutlined className="align-middle" />}
-            text="2"
+            text="we are gong... "
             key="list-vertical-message"
           />,
         ]}
         extra={
           <div className=" mb-7 md:mb-0">
-            <img
-              width={272}
+            <Image
+              className="object-cover max-w-full md:max-w-sm"
               alt="logo"
               src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
             />
