@@ -2,6 +2,8 @@ import React from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { LayoutMenu } from "../layout";
 import { Home, Login, Register, UserReviews } from "../pages";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 type Children = {
   path: string;
@@ -47,5 +49,7 @@ const authRoutes: RoutesType[] = [
 ];
 
 export const ConfigRoutes: React.FC = () => {
-  return useRoutes([...routes, ...authRoutes]);
+  const { user } = useSelector((state: RootState) => state.user);
+
+  return useRoutes([...routes, ...(!user ? authRoutes : [])]);
 };

@@ -1,12 +1,10 @@
-import { LikeFilled, MessageOutlined, StarFilled } from "@ant-design/icons";
-import { Avatar, Button, Image, List, Rate, Space } from "antd";
+import { List } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
 
-import "./reviews.scss";
 import { ReviewsItem } from "../reviews-item";
+import "./reviews.scss";
 
-const data = Array.from({ length: 23 }).map((_, i) => ({
+const data = Array.from({ length: 4 }).map((_, i) => ({
   href: "/",
   title: `ant design part ${i}`,
   avatar: `https://joesch.moe/api/v1/random?key=${i}`,

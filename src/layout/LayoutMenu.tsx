@@ -2,20 +2,41 @@ import {
   HomeOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  SettingOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
+import { Icon } from "@iconify/react";
+
 import { Avatar, Button, Drawer, Layout, Menu, Select, Switch } from "antd";
 import React, { useEffect, useState } from "react";
 
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { Dark, Light } from "../components";
 import "./latout-menu.scss";
-
+import type { MenuProps, MenuTheme } from "antd/es/menu";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, setUser } from "../store";
 const { Header, Sider, Content } = Layout;
 
 const getKeys: string = localStorage.getItem("keys") || "1";
 const getLanguage: string = localStorage.getItem("language") || "ru";
+
+type MenuItem = Required<MenuProps>["items"][number];
+
+function getItem(
+  label: React.ReactNode,
+  key?: React.Key | null,
+  icon?: React.ReactNode,
+  children?: MenuItem[]
+): MenuItem {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  } as MenuItem;
+}
 
 const items = [
   {
@@ -35,11 +56,17 @@ export const LayoutMenu: React.FC = () => {
   const [language, setLanguage] = useState<string>(getLanguage);
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
+  const { user } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     localStorage.setItem("keys", keys);
     localStorage.setItem("language", language);
   }, [keys, language]);
+
+  const logout = () => {
+    dispatch(setUser({ user: null, token: null }));
+  };
 
   return (
     <Layout className="h-screen">
@@ -61,9 +88,8 @@ export const LayoutMenu: React.FC = () => {
             <Menu
               theme="dark"
               mode="inline"
-              selectedKeys={[keys]}
-              onSelect={(e) => setKeys(e.key)}
               items={items}
+              defaultSelectedKeys={[keys]}
             />
           </div>
         </div>
@@ -85,24 +111,47 @@ export const LayoutMenu: React.FC = () => {
             }
           )}
 
-          <div>
-            <Switch
-              className="relative overflow-hidden bg-slate-400"
-              checkedChildren={<Dark />}
-              unCheckedChildren={<Light />}
-              onChange={(e) => console.log(e)}
-            />
-            <Select
-              className="mx-3"
-              value={language}
-              onChange={(e) => setLanguage(e)}
-              options={[
-                { value: "ru", label: "Russian" },
-                { value: "en", label: "English" },
-                { value: "uz", label: "Uzbek" },
-              ]}
-            />
-            <Button type="link">Log out</Button>
+          <div className="flex items-center">
+            <div className="hidden sm:block">
+              <Switch
+                className="relative overflow-hidden bg-slate-400"
+                checkedChildren={<Dark />}
+                unCheckedChildren={<Light />}
+                onChange={(e) => console.log(e)}
+              />
+              <Select
+                className="mx-3"
+                value={language}
+                onChange={(e) => setLanguage(e)}
+                options={[
+                  { value: "ru", label: "Russian" },
+                  { value: "en", label: "English" },
+                  { value: "uz", label: "Uzbek" },
+                ]}
+              />
+            </div>
+            <Button className="sm:hidden h-auto text-2xl mr-2 ">
+              <SettingOutlined className="relative -top-1" />
+            </Button>
+            {user ? (
+              <Button onClick={logout} className="h-auto" type="link">
+                <strong className="hidden sm:inline-block">Logout</strong>
+                <Icon
+                  className="sm:hidden text-3xl"
+                  icon="ant-design:logout-outlined"
+                />
+              </Button>
+            ) : (
+              <Button className="h-auto" type="link">
+                <Link to={"/login"}>
+                  <strong className="hidden sm:inline-block">Login</strong>
+                  <Icon
+                    className="sm:hidden text-3xl"
+                    icon="ant-design:login-outlined"
+                  />
+                </Link>
+              </Button>
+            )}
           </div>
         </Header>
         <Content className="content">

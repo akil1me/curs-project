@@ -7,13 +7,20 @@ import {
 } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 
+export type Values = {
+  username?: string;
+  email: string;
+  password: string;
+};
+
 type AuthFormProps = {
   title: string;
   link: string;
-  onSubmit: () => void;
+  onSubmit: (val: Values) => void;
   confirm?: React.ReactElement;
   socialNetwork?: React.ReactElement;
   username?: React.ReactElement;
+  loading: boolean;
 };
 
 export const AuthForm: React.FC<AuthFormProps> = ({
@@ -23,9 +30,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   confirm,
   socialNetwork,
   username,
+  loading,
 }) => {
-  const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+  const onFinish = ({ username, password, email }: Values) => {
+    onSubmit({ email, password, username });
   };
 
   return (
@@ -64,7 +72,12 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           {confirm}
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="bg-blue-500">
+            <Button
+              loading={loading}
+              type="primary"
+              htmlType="submit"
+              className="bg-blue-500"
+            >
               {title}
             </Button>
             <span className="float-right">

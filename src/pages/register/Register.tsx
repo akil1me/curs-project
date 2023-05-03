@@ -1,11 +1,45 @@
-import { Form, Input } from "antd";
-import { AuthForm } from "../../components";
+import { Form, Input, Modal } from "antd";
+import { AuthForm, Values } from "../../components";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { axiosInstans } from "../../api";
+import { useState } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 export const Register: React.FC = () => {
-  const onSubmit = (): void => {};
+  const [loading, setLoading] = useState<boolean>(false);
+  const naviagate = useNavigate();
+  const Modalerror = (
+    data: string,
+    status: "error" | "success",
+    nav?: NavigateFunction
+  ) => {
+    Modal[`${status}`]({
+      title: data,
+      okType: "default",
+      onOk() {
+        nav && nav("/login");
+      },
+    });
+  };
+  const onSubmit = async ({ email, password, username }: Values) => {
+    try {
+      setLoading(true);
+      const { data } = await axiosInstans.post("regitser", {
+        email,
+        password,
+        username,
+      });
+      Modalerror(data.message, "success", naviagate);
+    } catch (error: any) {
+      Modalerror(error.response.data.message, "error");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <AuthForm
+      loading={loading}
       title={"Register"}
       onSubmit={onSubmit}
       link="login"

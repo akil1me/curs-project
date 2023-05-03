@@ -1,7 +1,7 @@
 import { LikeFilled, MessageOutlined, StarFilled } from "@ant-design/icons";
 import { Avatar, Image, List, Rate } from "antd";
 import { Link } from "react-router-dom";
-import { IconText } from "./reviews-item-actions";
+import { IconText } from "./Reviews-item-actions";
 
 type ReviewsItemProps = {
   href: string;
@@ -39,6 +39,7 @@ export const ReviewsItem: React.FC<ReviewsItemProps> = ({
           icon={<LikeFilled className="text-red-600 align-middle" />}
           text="156"
           key="list-vertical-like-o"
+          typeDanger
         />,
         <IconText
           icon={<MessageOutlined className="align-middle" />}

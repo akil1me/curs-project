@@ -1,11 +1,42 @@
-import { Button } from "antd";
-import { AuthForm } from "../../components";
+import { Button, Modal } from "antd";
+import { AuthForm, Values } from "../../components";
 import { FacebookOutlined, GooglePlusOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import { axiosInstans } from "../../api";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store";
 
 export const Login: React.FC = () => {
-  const onSubmit = (): void => {};
+  const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
+  const Modalerror = (data: string, status: "error" | "success") => {
+    Modal[`${status}`]({
+      title: data,
+      okType: "default",
+    });
+  };
+
+  const onSubmit = async ({ email, password }: Values) => {
+    try {
+      setLoading(true);
+      const { data } = await axiosInstans.post("login", {
+        email,
+        password,
+      });
+
+      dispatch(setUser(data));
+    } catch (error: any) {
+      Modalerror(error.response.data.message, "error");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <AuthForm
+      loading={loading}
       title={"Log in"}
       onSubmit={onSubmit}
       link="register"
