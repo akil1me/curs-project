@@ -2,6 +2,7 @@ import {
   HomeOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  PlusCircleOutlined,
   SettingOutlined,
   UserOutlined,
   VideoCameraOutlined,
@@ -11,48 +12,39 @@ import { Icon } from "@iconify/react";
 import { Avatar, Button, Drawer, Layout, Menu, Select, Switch } from "antd";
 import React, { useEffect, useState } from "react";
 
-import { Link, NavLink, Outlet } from "react-router-dom";
-import { Dark, Light } from "../components";
-import "./latout-menu.scss";
-import type { MenuProps, MenuTheme } from "antd/es/menu";
+import type { MenuProps } from "antd/es/menu";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
+import { Dark, Light } from "../components";
 import { RootState, setUser } from "../store";
+import "./latout-menu.scss";
 const { Header, Sider, Content } = Layout;
 
-const getKeys: string = localStorage.getItem("keys") || "1";
 const getLanguage: string = localStorage.getItem("language") || "ru";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-function getItem(
-  label: React.ReactNode,
-  key?: React.Key | null,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
-
-const items = [
+const items: MenuItem[] = [
   {
-    key: "1",
+    key: "/",
     icon: <HomeOutlined />,
     label: <Link to="">home</Link>,
   },
   {
-    key: "2",
+    key: "/reviews",
     icon: <VideoCameraOutlined />,
     label: <Link to="reviews">my reviews</Link>,
+  },
+  {
+    key: "/add-reviews",
+    icon: <PlusCircleOutlined />,
+    label: <Link to="add-reviews"> add reviews</Link>,
   },
 ];
 
 export const LayoutMenu: React.FC = () => {
-  const [keys, setKeys] = useState<string>(getKeys);
+  const loacation = useLocation();
+  const [keys, setKeys] = useState<string>(loacation.pathname);
   const [language, setLanguage] = useState<string>(getLanguage);
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
@@ -60,9 +52,9 @@ export const LayoutMenu: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    localStorage.setItem("keys", keys);
+    setKeys(loacation.pathname);
     localStorage.setItem("language", language);
-  }, [keys, language]);
+  }, [keys, language, loacation.pathname]);
 
   const logout = () => {
     dispatch(setUser({ user: null, token: null }));
@@ -89,7 +81,8 @@ export const LayoutMenu: React.FC = () => {
               theme="dark"
               mode="inline"
               items={items}
-              defaultSelectedKeys={[keys]}
+              selectedKeys={[keys]}
+              onSelect={(e) => setKeys(e.key)}
             />
           </div>
         </div>
@@ -182,7 +175,7 @@ export const LayoutMenu: React.FC = () => {
         >
           <Menu
             theme="dark"
-            defaultSelectedKeys={[keys]}
+            selectedKeys={[keys]}
             onSelect={(e) => setKeys(e.key)}
             items={items}
             onClick={() => setOpen(false)}

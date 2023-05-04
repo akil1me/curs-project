@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { LayoutMenu } from "../layout";
-import { Home, Login, Register, UserReviews } from "../pages";
+import { AddReviews, Home, Login, Register, UserReviews } from "../pages";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
@@ -28,6 +28,10 @@ const routes: RoutesType[] = [
       {
         path: "reviews",
         element: <UserReviews />,
+      },
+      {
+        path: "add-reviews",
+        element: <AddReviews />,
       },
       {
         path: "*",

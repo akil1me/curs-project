@@ -2,6 +2,7 @@ import { LikeFilled, MessageOutlined, StarFilled } from "@ant-design/icons";
 import { Avatar, Image, List, Rate } from "antd";
 import { Link } from "react-router-dom";
 import { IconText } from "./Reviews-item-actions";
+import ReactMarkdown from "react-markdown";
 
 type ReviewsItemProps = {
   href: string;
@@ -72,7 +73,7 @@ export const ReviewsItem: React.FC<ReviewsItemProps> = ({
         }
         description={description}
       />
-      {content}
+      <ReactMarkdown>{content}</ReactMarkdown>
     </List.Item>
   );
 };
